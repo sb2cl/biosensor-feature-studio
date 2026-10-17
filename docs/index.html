@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="BioSensor Feature Studio: browser-based, uncertainty-aware dose-response analysis for genetic biosensors.">
+  <title>BioSensor Feature Studio | Research Beta</title>
+  <link rel="stylesheet" href="./styles.css">
+  <script defer src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/pyodide/v0.28.3/full/pyodide.js"></script>
+  <script defer src="./app.js"></script>
+</head>
+<body>
+  <div class="shell">
+    <header class="topbar"><a class="brand" href="./"><span class="brand-mark">B<span class="brand-dot">·</span>S</span><span>BioSensor <strong>Feature Studio</strong></span></a><div class="toplinks"><a href="https://github.com" target="_blank" rel="noopener">GitHub repository ↗</a><span class="beta">Research beta v0.2</span></div></header>
+    <section class="hero"><div><div class="eyebrow">UNCERTAINTY-AWARE BIOSENSOR CHARACTERIZATION</div><h1>From dose–response data<br>to <em>interpretable design features.</em></h1><p>Explore basal expression, dynamic range, EC50 and response shape with system-specific estimators, bootstrap uncertainty and transparent quality checks.</p></div><div class="hero-aside"><div class="status-bullet"></div><div><strong>Runs in your browser</strong><p>Your uploaded files are processed locally, with no application data-upload endpoint.</p></div></div></section>
+    <div class="status" id="status" role="status">Initializing Python scientific engine… first load may take a minute.</div>
+    <div class="workspace">
+      <aside class="sidebar">
+        <section class="panel"><div class="section-label">01 / DATA</div><h2>Choose a dataset</h2><label class="file-button" for="csvFile">Upload normalized CSV <span>↗</span></label><input type="file" id="csvFile" accept=".csv,text/csv"><button type="button" id="demoBtn" class="quiet-button">Restore synthetic demo</button><p class="help" id="datasetNote">Only synthetic example data are shipped with this site. Your CSV stays in this browser session.</p></section>
+        <section class="panel"><div class="section-label">02 / ANALYSIS</div><label for="system">System</label><select id="system" disabled><option>Loading…</option></select><label for="series">Construct / experiment</label><select id="series" disabled><option>Loading…</option></select><label for="source">Input type</label><select id="source" disabled><option>experiment</option></select><label for="nboot">Experimental bootstrap draws</label><input id="nboot" type="number" min="30" max="5000" step="10" value="150"><label for="jitter">Jitter fraction (blank = default)</label><input id="jitter" type="number" min="0" max="0.5" step="0.01" placeholder="FdeR: 0.07 · pLux: 0"><button type="button" id="analyzeBtn" class="primary" disabled>Extract features <span>→</span></button><p class="help">Bootstrap settings affect the new browser analysis, not the archived MATLAB results.</p></section>
+        <section class="panel"><div class="section-label">03 / DESIGN CONSTRAINTS</div><h2>Explore specifications</h2><label for="ecmax">EC50 ≤ (inducer unit)</label><input id="ecmax" type="number" step="any" min="0" placeholder="Optional"><label for="drmin">Dynamic range ≥ (MEFL/cell)</label><input id="drmin" type="number" step="any" min="0" placeholder="Optional"><label for="basmax">Basal ≤ (MEFL/cell)</label><input id="basmax" type="number" step="any" min="0" placeholder="Optional"><button type="button" class="quiet-button" id="applySpecs" disabled>Evaluate these thresholds</button><p class="help">Fraction of joint bootstrap samples or whole model draws meeting all selected thresholds. Not a validated success probability.</p></section>
+      </aside>
+      <main class="main">
+        <div class="meta-row"><div><span class="section-label">ANALYSIS OUTPUT</span><h2 id="resultTitle">Waiting for the analysis engine</h2><p id="resultSubtitle" class="subhead">Load the synthetic demo or choose your own normalized CSV file.</p></div><div id="quality" class="quality neutral">Not analyzed</div></div>
+        <div id="disclaimer" class="notice">The website is a research prototype. The archived MATLAB pipeline remains authoritative until estimator and bootstrap equivalence tests are completed.</div>
+        <div class="cards"><div class="metric"><div class="metric-label">Basal expression</div><div class="metric-value" id="basal">—</div><div class="metric-ci" id="basalCI">MEFL / cell</div></div><div class="metric"><div class="metric-label">Primary dynamic range</div><div class="metric-value" id="dr">—</div><div class="metric-ci" id="drCI">Not calculated</div></div><div class="metric"><div class="metric-label">Primary EC50</div><div class="metric-value" id="ec50">—</div><div class="metric-ci" id="ec50CI">Not calculated</div></div><div class="metric"><div class="metric-label">Hill coefficient <span class="thin">(diagnostic)</span></div><div class="metric-value" id="hill">—</div><div class="metric-ci" id="hillCI">Not calculated</div></div></div>
+        <section class="content-panel"><div class="panel-title"><div><div class="section-label">RESPONSE CURVE</div><h3>Dose–response with uncertainty</h3></div><span class="aside-note">Bootstrap / posterior bands · 95%</span></div><div id="plot" role="img" aria-label="Dose-response chart"><div class="placeholder">Chart will appear after feature extraction</div></div></section>
+        <div class="lower-grid"><section class="content-panel"><div class="panel-title"><div><div class="section-label">ESTIMATOR TRANSPARENCY</div><h3>Primary and alternative features</h3></div></div><div class="table-wrap"><table><thead><tr><th>Descriptor</th><th>Median</th><th>95% interval</th><th>Role</th></tr></thead><tbody id="featureTable"><tr><td colspan="4">Run an analysis to view estimated features.</td></tr></tbody></table></div></section><section class="content-panel"><div class="panel-title"><div><div class="section-label">DATA QUALITY</div><h3>Interpretation &amp; design</h3></div></div><div id="warnings" class="warnings">Quality and fit diagnostics will appear here.</div><div id="probability" class="probability">No design thresholds selected.</div></section></div>
+        <div class="export-row"><button id="downloadSummary" type="button" class="quiet-button" disabled>Download feature CSV ↓</button><button id="downloadCurves" type="button" class="quiet-button" disabled>Download curve CSV ↓</button><button id="downloadRecord" type="button" class="quiet-button" disabled>Download provenance JSON ↓</button></div>
+      </main>
+    </div>
+    <footer><span>BioSensor Feature Studio <strong>v0.2 research beta</strong></span><span>Example data are synthetic · Python runs client-side through Pyodide · No frozen model refitting</span></footer>
+  </div>
+</body>
+</html>
