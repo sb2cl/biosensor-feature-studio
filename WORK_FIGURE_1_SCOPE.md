@@ -1,4 +1,4 @@
-# Figure 1 / JBE software scope (GitHub Pages beta v0.2)
+# Figure 1 / JBE software scope (GitHub Pages beta v0.2.1)
 
 **Figure 1** should depict the modular workflow **measured time courses -> calibrated, QC'd replicate dose-response -> system-aware estimators -> uncertainty + interpretability -> performance/design descriptors**. BioSensor Feature Studio supplies a public-browser implementation of the middle analysis layers.
 

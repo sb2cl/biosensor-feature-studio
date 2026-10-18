@@ -56,7 +56,7 @@ def test_links_reference_downloadable_templates():
         assert f'href="./data/{name}"' in html
         assert (ROOT/'docs'/'data'/name).is_file()
     assert '<div class="section-label">01 / DATA</div>' in html
-    assert re.search(r'Research beta v0\.2\.\d+', html)
+    assert re.search(r'Release v1\.0\.0', html)
 
 
 def test_templates_have_no_private_files_or_data():

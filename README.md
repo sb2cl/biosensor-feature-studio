@@ -1,102 +1,101 @@
-## v0.2.4: downloadable import templates
+# BioSensor Feature Studio
 
-The GitHub Pages application now provides two **synthetic** downloadable CSV templates in **01 / DATA**: one for dose-by-replicate experimental measurements and one for complete posterior-draw curves. See `docs/data/CSV_TEMPLATE_GUIDE.md` for column definitions and units. This is a UI-only release based on validated beta v0.2.3: **no scientific engine or bootstrap code changed**.
+**Version 1.0.0 - release candidate for GitHub + Zenodo archive.**
 
-# BioSensor Feature Studio — GitHub Pages edition (v0.2.4 research beta)
+Public application: https://sb2cl.github.io/biosensor-feature-studio/  
+Source: https://github.com/sb2cl/biosensor-feature-studio  
+Developed at the Synthetic Biology and Biosystems Control Lab (SB2CL),
+Institute ai2, Universitat Politècnica de València, Spain.
 
-Interactive, scientific dose–response characterization with **Python (NumPy/pandas/SciPy) running in the visitor's browser** via Pyodide/WebAssembly. The `docs/` directory can be hosted directly on GitHub Pages with no server-side Python and no authentication for visitors.
+## What the software does
 
-## Deploy on GitHub Pages (branch based)
+A browser-based, locally executing workflow for **normalized** genetic
+biosensor dose-response input. Python (NumPy, pandas, SciPy) runs through
+Pyodide; Plotly displays the results. No server endpoint accepts user-uploaded
+scientific CSV data. The browser **does** contact external CDNs for the
+Pyodide runtime and Plotly libraries; use appropriate network/privacy policy.
 
-1. Create a new GitHub repository, e.g. `biosensor-feature-studio` (public for public Pages hosting).
-2. Upload **the contents of this ZIP** to the repository root. Keep `docs/` as a subfolder.
-3. Open **Settings → Pages → Build and deployment**. Under **Source**, select **Deploy from a branch**; select **main** and **/docs**, then **Save**.
-4. GitHub will provide a public link resembling `https://YOUR-ACCOUNT.github.io/biosensor-feature-studio/`. Allow a few minutes for publishing.
-5. Open the page. On first load, the Pyodide runtime and Python scientific packages will download; subsequent loads may benefit from browser caching.
+- Load calibrated per-dose biological replicate data (`source=experiment`) or
+  sets of complete curves indexed by posterior draw (`source=model`).
+- Estimate basal, primary/secondary dynamic range and EC50, Hill parameters
+  and maximum Hill sensitivity with FdeR/pLux-specific estimator profiles.
+- Resample replicates **within each dose** for experimental bootstrap or
+  summarize **whole posterior curves** without disrupting dose correlations.
+- Flag nonresponsive/suspect responses; keep calculated but scientifically
+  noninterpretable parameters in provenance with `Interpretable=false`.
+- Evaluate exploratory joint thresholds on basal, DR and EC50 over valid
+  resampled or posterior curves; export summary CSV, curve CSV and JSON.
 
-Do not create the URL in the paper until it has been published and verified. The 'GitHub repository' header link in `docs/index.html` defaults to GitHub's home page; replace it with the actual repository URL before release.
+## Start using the web app
 
-## What is dynamic?
+Open https://sb2cl.github.io/biosensor-feature-studio/ and select a synthetic
+demo. To analyze data, download the templates in **01 / DATA**, replace the
+synthetic rows, and upload a normalized CSV from your own computer.
 
-- Users import dose-replicate CSVs **locally** without an application server.
-- Select a biosensor system (`FdeR`, `pLux`) and construct/experiment.
-- Calculate basal, total/positive dynamic ranges, FdeR's finite-range Hill EC50, pLux's monotone-envelope operational EC50, descriptive Hill parameters and Smax.
-- Inspect response curves and bootstrap uncertainty intervals, view interpretation warnings, evaluate joint design thresholds, download summary/curves/provenance.
-- Model-posterior inputs are accepted as **whole curves per draw** (consistent `replicate` ID across all doses).
+Required columns: `system,series,dose,replicate,signal`. Optional:
+`source` (`experiment` or `model`), `dose_unit`, `window`, `qc_annotation`,
+and additional metadata. Use `FdeR` for inducer in **uM** and `pLux` for
+inducer in **nM**; signals must already be normalized to **MEFL/cell**.
+See [template guide](docs/data/CSV_TEMPLATE_GUIDE.md).
 
-The site ships **synthetic demonstration data only**. Upload your own normalized CSV to analyze unpublished data in the browser. No server receives uploaded data from this app. The browser *does* download scientific runtime and plotting libraries from external CDNs.
+Each model `replicate` identifies one complete posterior curve with the same
+dose grid as the other draws. The application does not generate ODE
+trajectories or sample a calibrated parameter posterior internally.
 
-## Import schema
+## Reproduce tests locally
 
-Required CSV columns: `system,series,dose,replicate,signal`. Optional: `source` (`experiment` default, or `model`), `dose_unit`, `window`, `qc_annotation`. The synthetic demo at `docs/data/synthetic_demo.csv` provides a template. Every series must include 0-dose and at least 4 dose levels, with consistent dose units. Signals should be normalized as appropriate **before** importing; this browser edition does not run raw instrument calibration or select time-series windows.
+Python 3.11 or later is recommended for offline tests. From the root:
 
-For archived MATLAB datasets, use the offline v0.1 converter or `prepare_data.py` with dependencies from `requirements-offline.txt`. **Do not put the original experimental MAT files in a public GitHub repository.** The converter is an offline helper, not part of the public browser application.
+```bash
+python -m pip install -r requirements-offline.txt
+python -m pytest tests -q
+node --check docs/app.js
+```
 
-## Scientific scope and limitations
-
-- FdeR primary descriptors: DR = maximum-minus-minimum; EC50 from fitted Hill response over finite observed dose range. Bootstrap with 0.07 SD jitter by default.
-- pLux primary descriptors: DR = maximum-minus-zero-dose; EC50 from monotone-envelope crossing. Default bootstrap jitter 0.
-- The Python optimizer, bootstrap randomness and numerical bounds are not identical to MATLAB's historical frozen pipeline. **The site is a functional research beta, not a numerical replacement for the final VBMC/PPC results** until cross-language regression testing is complete.
-- `NONRESPONSIVE_HIGH` suppresses EC50 interpretation, even if a numerical crossing can be computed.
-- Joint threshold frequencies are exploratory fractions over bootstrap samples or user-provided complete posterior curves; not clinically or experimentally validated success probabilities.
-- No ODE integration, VBMC fitting, independent q_RBS uncertainty propagation or raw MAT parsing in the public browser v0.2.4 release.
-- Source code and synthetic data can be public; keep unpublished original replicates and any private data out of the repository.
-
-## Local preview
-
-Serve the `docs` folder with a static server (rather than opening HTML from disk):
+`node` is needed for JavaScript syntax validation, not for running the app.
+For a static local preview:
 
 ```bash
 cd docs
 python -m http.server 8000
 ```
 
-Open `http://localhost:8000/`. **Internet access is required for the CDN scientific runtime on first load.**
+Open http://localhost:8000/ with an internet connection for CDN assets.
+GitHub Pages is configured to serve `main` / `docs`.
 
-## Files
+## Scientific scope and limitations
 
-- `docs/index.html`, `docs/styles.css`, `docs/app.js`: client-side UI.
-- `docs/py/features.py`: same feature-analysis engine as Studio v0.1.
-- `docs/data/synthetic_demo.csv`: synthetic, nonexperimental test data.
-- `biosensor_studio`, `prepare_data.py`, `requirements-offline.txt`: optional Python tools outside public Pages path.
+- **FdeR primary DR:** maximum minus minimum, over the observed dose grid.
+  **FdeR primary EC50:** finite-range midpoint of a fitted Hill response.
+- **pLux primary DR:** maximum minus explicit zero-dose basal.
+  **pLux primary EC50:** monotone-envelope operational crossing.
+- 95% intervals are descriptive bootstrap or supplied-posterior summaries,
+  not experimental success guarantees. Posterior intervals exclude
+  observational uncertainty unless contained in the supplied curves.
+- The browser accepts already processed MEFL/cell values. It does **not**
+  ingest raw fluorescence/time series, calibrate a plate reader, select time
+  windows, integrate biological ODEs, fit a VBMC posterior, or propagate
+  external RBS translation-factor uncertainty automatically.
+- This is an independent Python implementation, not a certified bitwise or
+  draw-by-draw reproduction of the archived FdeR/pLux MATLAB pipelines.
+  The frozen analyses remain the source for quantitative paper PPCs and
+  design maps. Cross-language regression and validation boundaries are
+  documented in [validation status](VALIDATION_STATUS_v1_0_0.md).
+- Response QC uses simple annotations and summary/shape diagnostics;
+  passing an automated QC check is not proof of a valid biological response.
 
-Before manuscript release: pin/check dependency versions, regression-test against frozen MATLAB numerical outputs, introduce a proper license, DOI/release/archive, and scientific citation/version metadata. All features are intentionally described as research-beta capabilities until tested.
+## License, attribution, and citation
 
-## v0.2.2 scientific validation hotfix (18 October 2026)
+**Code:** MIT. Copyright (c) 2026 Universitat Politècnica de València.
+**Software authors:** Yadira Boada and Alejandro Vignoni, in that order.
+ORCID and scholarly affiliations are in [CITATION.cff](CITATION.cff) and
+[AUTHORS.md](AUTHORS.md).
 
-- Replaces numerical `np.gradient` for Hill maximum sensitivity with the analytical derivative. For `n < 1`, the slope at 0 diverges; nonfinite Smax samples are excluded from Smax finite quantiles (as in frozen MATLAB `biosensorStats4.m`), and their count is reported. Other bootstrap features retain those same draws.
-- Applies design feasibility validity only to characteristics actually constrained; basal-only/DR-only criteria no longer require a valid EC50.
-- Suppresses non-interpretable primary EC50 numbers from summary tables when response QC is not `USABLE`; exported rows retain numerical calculations for audit with an explicit `Interpretable` status.
-- Points the page header to the SB2CL repository.
+The SB2CL and university names and logos do not imply trademark or
+endorsement permission for reuse; see [brand notice](BRANDING_AND_ASSETS.md).
+No actual experimental private measurements or MATLAB/posterior archives
+are bundled in this public software distribution; the demo data are synthetic.
 
-A private baseline comparison (five FdeR blocks and ten pLux series, 65 feature summaries) is being used for validation. The reference MAT files and comparison reports are NOT bundled with the public site. This hotfix does NOT certify the complete web platform or secondary Hill/pLux bootstrap equivalence.
-
-
-## v0.2.2 deployment hotfix
-
-Restores the pinned Pyodide CDN runtime version v0.28.3 used by v0.2. A v0.2.1 string substitution accidentally changed the runtime reference to a nonexistent version (v0.2.18.3), preventing the browser engine from starting. No scientific algorithms changed.
-
-## v0.2.3 quality-interpretability hotfix (18 October 2026)
-
-On flagged nonresponsive or review curves, both operational and Hill EC50s,
-Hill parameters and derived Hill maximum sensitivity are not biologically
-interpretable. The interface suppresses these response-dependent estimates.
-Exports retain raw algorithmic numbers for audit, but carry
-`Interpretable=false` in CSV **and** provenance JSON. Basal, total range,
-positive excursion and fit-quality statistics remain available as
-descriptive or diagnostic quantities, not design validation.
-No estimator, bootstrap, numerical result or posterior was modified.
-
-For v0.2.3 browser QC checks and the three-draw synthetic posterior test,
-see `QC_VALIDATION_v0_2_3.md`.
-
-## CSV templates (released in v0.2.4)
-
-The **01 / DATA** panel offers two downloadable examples, `docs/data/template_experiment.csv` and `docs/data/template_posterior.csv`. Both are synthetic, fully importable and contain example FdeR/pLux series. See `docs/data/CSV_TEMPLATE_GUIDE.md` for the schema and privacy notes. This UI addition does not change the scientific engine or browser `app.js`.
-
-
-### Laboratory affiliation (v0.2.5)
-
-BioSensor Feature Studio is developed by the **Synthetic Biology and Biosystems Control Lab (SB2CL)**, Institute ai2, **Universitat Politècnica de València**. The institutional signature and lab logo link to the [official laboratory page](https://www.ai2.upv.es/en/sb2cl/). This change is presentational only: estimators, numerical results, bootstrap, and data processing remain unchanged from v0.2.4.
-
-For print/publication-grade branding, replace `docs/assets/sb2cl-lab-logo.png` with an approved high-resolution SB2CL logo while preserving its dimensions and accessible description.
+**Zenodo version-specific DOI:** not assigned until the real `v1.0.0`
+GitHub release is archived. Do not cite a guessed DOI. Instructions are in
+[release guide](RELEASE_ZENODO_GUIDE.md).

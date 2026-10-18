@@ -1,0 +1,13 @@
+system,series,source,dose,replicate,signal,dose_unit,window,qc_annotation
+pLux,POSTERIOR_JOINT_TEST_SYNTHETIC,model,0,draw01,10,nM,synthetic posterior input,
+pLux,POSTERIOR_JOINT_TEST_SYNTHETIC,model,50,draw01,30,nM,synthetic posterior input,
+pLux,POSTERIOR_JOINT_TEST_SYNTHETIC,model,100,draw01,80,nM,synthetic posterior input,
+pLux,POSTERIOR_JOINT_TEST_SYNTHETIC,model,200,draw01,100,nM,synthetic posterior input,
+pLux,POSTERIOR_JOINT_TEST_SYNTHETIC,model,0,draw02,20,nM,synthetic posterior input,
+pLux,POSTERIOR_JOINT_TEST_SYNTHETIC,model,50,draw02,60,nM,synthetic posterior input,
+pLux,POSTERIOR_JOINT_TEST_SYNTHETIC,model,100,draw02,160,nM,synthetic posterior input,
+pLux,POSTERIOR_JOINT_TEST_SYNTHETIC,model,200,draw02,200,nM,synthetic posterior input,
+pLux,POSTERIOR_JOINT_TEST_SYNTHETIC,model,0,draw03,30,nM,synthetic posterior input,
+pLux,POSTERIOR_JOINT_TEST_SYNTHETIC,model,50,draw03,90,nM,synthetic posterior input,
+pLux,POSTERIOR_JOINT_TEST_SYNTHETIC,model,100,draw03,240,nM,synthetic posterior input,
+pLux,POSTERIOR_JOINT_TEST_SYNTHETIC,model,200,draw03,300,nM,synthetic posterior input,

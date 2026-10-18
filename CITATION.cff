@@ -1,0 +1,26 @@
+cff-version: 1.2.0
+message: "If you use BioSensor Feature Studio in research, cite the version-specific archived software release DOI when it is available."
+type: software
+title: "BioSensor Feature Studio"
+version: 1.0.0
+abstract: "An open-source browser-based workflow for uncertainty-aware characterization of genetic biosensor dose-response data and externally generated model curves, with system-specific feature estimators, interpretability diagnostics, and exploratory design constraints."
+authors:
+  - given-names: Yadira
+    family-names: Boada
+    orcid: "https://orcid.org/0000-0001-5677-2702"
+    affiliation: "Synthetic Biology and Biosystems Control Lab (SB2CL), Institute ai2, Universitat Politècnica de València"
+  - given-names: Alejandro
+    family-names: Vignoni
+    orcid: "https://orcid.org/0000-0001-9977-7132"
+    affiliation: "Synthetic Biology and Biosystems Control Lab (SB2CL), Institute ai2, Universitat Politècnica de València"
+repository-code: "https://github.com/sb2cl/biosensor-feature-studio"
+url: "https://sb2cl.github.io/biosensor-feature-studio/"
+license: MIT
+keywords:
+  - biosensors
+  - synthetic biology
+  - biological engineering
+  - dose-response curves
+  - feature extraction
+  - uncertainty quantification
+  - research software
