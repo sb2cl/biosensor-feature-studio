@@ -272,6 +272,16 @@ def analyze_series(df: pd.DataFrame, system: str, series: str,
                          CI97p5=float(np.percentile(a, 97.5)) if len(a) else np.nan,
                          ValidPct=100*len(a)/len(draws)))
     summary = pd.DataFrame(vals)
+    # Auditable numeric estimates are retained, but biological interpretability
+    # is a separate property. An algorithmic crossing can exist on noise.
+    response_dependent = {
+        'EC50_operational', 'EC50_Hill_FdeR',
+        'Hill_n', 'Hill_K', 'Smax_Hill',
+    }
+    summary['Interpretable'] = [
+        bool(quality == 'USABLE' or feature not in response_dependent)
+        for feature in summary.Feature
+    ]
     observed = (group.groupby('dose').signal.agg(
         n='size', median='median', mean='mean', std='std').reset_index())
     observed['dose_unit'] = group.dose_unit.iloc[0]

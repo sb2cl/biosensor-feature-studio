@@ -1,4 +1,4 @@
-# BioSensor Feature Studio — GitHub Pages edition (v0.2 research beta)
+# BioSensor Feature Studio — GitHub Pages edition (v0.2.3 research beta)
 
 Interactive, scientific dose–response characterization with **Python (NumPy/pandas/SciPy) running in the visitor's browser** via Pyodide/WebAssembly. The `docs/` directory can be hosted directly on GitHub Pages with no server-side Python and no authentication for visitors.
 
@@ -35,7 +35,7 @@ For archived MATLAB datasets, use the offline v0.1 converter or `prepare_data.py
 - The Python optimizer, bootstrap randomness and numerical bounds are not identical to MATLAB's historical frozen pipeline. **The site is a functional research beta, not a numerical replacement for the final VBMC/PPC results** until cross-language regression testing is complete.
 - `NONRESPONSIVE_HIGH` suppresses EC50 interpretation, even if a numerical crossing can be computed.
 - Joint threshold frequencies are exploratory fractions over bootstrap samples or user-provided complete posterior curves; not clinically or experimentally validated success probabilities.
-- No ODE integration, VBMC fitting, independent q_RBS uncertainty propagation or raw MAT parsing in the public browser v0.2 release.
+- No ODE integration, VBMC fitting, independent q_RBS uncertainty propagation or raw MAT parsing in the public browser v0.2.3 release.
 - Source code and synthetic data can be public; keep unpublished original replicates and any private data out of the repository.
 
 ## Local preview
@@ -57,3 +57,31 @@ Open `http://localhost:8000/`. **Internet access is required for the CDN scienti
 - `biosensor_studio`, `prepare_data.py`, `requirements-offline.txt`: optional Python tools outside public Pages path.
 
 Before manuscript release: pin/check dependency versions, regression-test against frozen MATLAB numerical outputs, introduce a proper license, DOI/release/archive, and scientific citation/version metadata. All features are intentionally described as research-beta capabilities until tested.
+
+## v0.2.2 scientific validation hotfix (18 October 2026)
+
+- Replaces numerical `np.gradient` for Hill maximum sensitivity with the analytical derivative. For `n < 1`, the slope at 0 diverges; nonfinite Smax samples are excluded from Smax finite quantiles (as in frozen MATLAB `biosensorStats4.m`), and their count is reported. Other bootstrap features retain those same draws.
+- Applies design feasibility validity only to characteristics actually constrained; basal-only/DR-only criteria no longer require a valid EC50.
+- Suppresses non-interpretable primary EC50 numbers from summary tables when response QC is not `USABLE`; exported rows retain numerical calculations for audit with an explicit `Interpretable` status.
+- Points the page header to the SB2CL repository.
+
+A private baseline comparison (five FdeR blocks and ten pLux series, 65 feature summaries) is being used for validation. The reference MAT files and comparison reports are NOT bundled with the public site. This hotfix does NOT certify the complete web platform or secondary Hill/pLux bootstrap equivalence.
+
+
+## v0.2.2 deployment hotfix
+
+Restores the pinned Pyodide CDN runtime version v0.28.3 used by v0.2. A v0.2.1 string substitution accidentally changed the runtime reference to a nonexistent version (v0.2.18.3), preventing the browser engine from starting. No scientific algorithms changed.
+
+## v0.2.3 quality-interpretability hotfix (18 October 2026)
+
+On flagged nonresponsive or review curves, both operational and Hill EC50s,
+Hill parameters and derived Hill maximum sensitivity are not biologically
+interpretable. The interface suppresses these response-dependent estimates.
+Exports retain raw algorithmic numbers for audit, but carry
+`Interpretable=false` in CSV **and** provenance JSON. Basal, total range,
+positive excursion and fit-quality statistics remain available as
+descriptive or diagnostic quantities, not design validation.
+No estimator, bootstrap, numerical result or posterior was modified.
+
+For v0.2.3 browser QC checks and the three-draw synthetic posterior test,
+see `QC_VALIDATION_v0_2_3.md`.
