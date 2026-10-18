@@ -3,7 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="description" content="BioSensor Feature Studio: browser-based, uncertainty-aware dose-response analysis for genetic biosensors.">
+  <meta name="description" content="BioSensor Feature Studio by SB2CL, Institute ai2, Universitat Politècnica de València: browser-based, uncertainty-aware genetic biosensor characterization.">
+  <meta name="author" content="Synthetic Biology and Biosystems Control Lab (SB2CL), Universitat Politècnica de València">
   <title>BioSensor Feature Studio | Research Beta</title>
   <link rel="stylesheet" href="./styles.css">
   <script defer src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
@@ -12,7 +13,19 @@
 </head>
 <body>
   <div class="shell">
-    <header class="topbar"><a class="brand" href="./"><span class="brand-mark">B<span class="brand-dot">·</span>S</span><span>BioSensor <strong>Feature Studio</strong></span></a><div class="toplinks"><a href="https://github.com/sb2cl/biosensor-feature-studio" target="_blank" rel="noopener">GitHub repository ↗</a><span class="beta">Research beta v0.2.4</span></div></header>
+    <header class="topbar">
+      <a class="brand" href="./" aria-label="BioSensor Feature Studio homepage">
+        <span class="brand-mark">B<span class="brand-dot">·</span>S</span>
+        <span>BioSensor <strong>Feature Studio</strong></span>
+      </a>
+      <div class="topbar-right">
+        <a class="institution" href="https://www.ai2.upv.es/en/sb2cl/" target="_blank" rel="noopener noreferrer" aria-label="About the Synthetic Biology and Biosystems Control Lab at Universitat Politècnica de València">
+          <img class="institution-logo" src="./assets/sb2cl-lab-logo.png" width="43" height="43" alt="SB2CL laboratory logo">
+          <span class="institution-copy"><strong>Developed by SB2CL</strong><small>Institute ai2 · Universitat Politècnica de València</small></span>
+        </a>
+        <nav class="toplinks" aria-label="Project links"><a href="https://github.com/sb2cl/biosensor-feature-studio" target="_blank" rel="noopener noreferrer">GitHub repository ↗</a><span class="beta">Research beta v0.2.5</span></nav>
+      </div>
+    </header>
     <section class="hero"><div><div class="eyebrow">UNCERTAINTY-AWARE BIOSENSOR CHARACTERIZATION</div><h1>From dose–response data<br>to <em>interpretable design features.</em></h1><p>Explore basal expression, dynamic range, EC50 and response shape with system-specific estimators, bootstrap uncertainty and transparent quality checks.</p></div><div class="hero-aside"><div class="status-bullet"></div><div><strong>Runs in your browser</strong><p>Your uploaded files are processed locally, with no application data-upload endpoint.</p></div></div></section>
     <div class="status" id="status" role="status">Initializing Python scientific engine… first load may take a minute.</div>
     <div class="workspace">
@@ -35,7 +48,13 @@
         <div class="export-row"><button id="downloadSummary" type="button" class="quiet-button" disabled>Download feature CSV ↓</button><button id="downloadCurves" type="button" class="quiet-button" disabled>Download curve CSV ↓</button><button id="downloadRecord" type="button" class="quiet-button" disabled>Download provenance JSON ↓</button></div>
       </main>
     </div>
-    <footer><span>BioSensor Feature Studio <strong>v0.2.4 research beta</strong></span><span>Example data are synthetic · Python runs client-side through Pyodide · No frozen model refitting</span></footer>
+    <footer class="site-footer">
+      <div class="footer-affiliation">
+        <div class="footer-product">BioSensor Feature Studio <strong>v0.2.5 research beta</strong></div>
+        <div>Research software developed by <a href="https://www.ai2.upv.es/en/sb2cl/" target="_blank" rel="noopener noreferrer">Synthetic Biology and Biosystems Control Lab (SB2CL)</a> · <a href="https://www.ai2.upv.es/en/" target="_blank" rel="noopener noreferrer">Institute ai2</a> · <a href="https://www.upv.es/" target="_blank" rel="noopener noreferrer">Universitat Politècnica de València</a></div>
+      </div>
+      <div class="footer-tech">Synthetic example data · Analysis runs locally in the browser · No model refitting</div>
+    </footer>
   </div>
 </body>
 </html>

@@ -93,3 +93,10 @@ see `QC_VALIDATION_v0_2_3.md`.
 ## CSV templates (released in v0.2.4)
 
 The **01 / DATA** panel offers two downloadable examples, `docs/data/template_experiment.csv` and `docs/data/template_posterior.csv`. Both are synthetic, fully importable and contain example FdeR/pLux series. See `docs/data/CSV_TEMPLATE_GUIDE.md` for the schema and privacy notes. This UI addition does not change the scientific engine or browser `app.js`.
+
+
+### Laboratory affiliation (v0.2.5)
+
+BioSensor Feature Studio is developed by the **Synthetic Biology and Biosystems Control Lab (SB2CL)**, Institute ai2, **Universitat Politècnica de València**. The institutional signature and lab logo link to the [official laboratory page](https://www.ai2.upv.es/en/sb2cl/). This change is presentational only: estimators, numerical results, bootstrap, and data processing remain unchanged from v0.2.4.
+
+For print/publication-grade branding, replace `docs/assets/sb2cl-lab-logo.png` with an approved high-resolution SB2CL logo while preserving its dimensions and accessible description.

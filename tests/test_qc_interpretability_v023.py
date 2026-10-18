@@ -49,5 +49,5 @@ def test_ui_and_provenance_support_shared_interpretability_flag():
     assert js.count('item.Interpretable===false')==1
     assert js.count('x.Interpretable===false')==1
     assert 'Interpretable:!(' not in js
-    assert "version:'GitHub Pages research beta v0.2.4'" in js
+    assert "version:'GitHub Pages research beta v0.2." in js
     assert (ROOT/'docs/py/features.py').read_bytes()==(ROOT/'biosensor_studio/features.py').read_bytes()

@@ -11,3 +11,21 @@
 .template-link{display:flex;justify-content:space-between;gap:8px;align-items:center;text-decoration:none;border:1px solid #cbdadd;background:#f8fcfc;border-radius:7px;color:#0b625d;font-size:11px;font-weight:700;padding:9px 10px;margin-top:6px}
 .template-link:hover,.template-link:focus-visible{background:#e9f6f5;border-color:var(--aqua)}
 .template-help{font-size:10px;color:#74858a;line-height:1.5;margin:9px 0 0}
+
+/* v0.2.5: compact, accessible institutional attribution. No scientific styles changed. */
+.topbar-right{display:flex;align-items:center;gap:25px;min-width:0}
+.institution{display:flex;align-items:center;gap:10px;min-width:0;text-decoration:none;color:var(--ink);padding:5px 9px 5px 5px;border-radius:9px;transition:background .15s ease}
+.institution:hover,.institution:focus-visible{background:#eaf3f3;text-decoration:none}
+.institution-logo{display:block;width:43px;height:43px;flex:none;object-fit:contain;background:white;border:1px solid #dae6e8;border-radius:9px}
+.institution-copy{display:flex;flex-direction:column;gap:3px;max-width:265px;line-height:1.2}
+.institution-copy strong{font-family:'Space Grotesk',sans-serif;font-size:12px;font-weight:700;letter-spacing:-.1px}
+.institution-copy small{font-size:10px;line-height:1.3;color:var(--muted)}
+.site-footer{align-items:start}
+.footer-affiliation{display:flex;flex-direction:column;gap:6px;line-height:1.5;color:#60777e}
+.footer-product{color:#61777e}
+.footer-affiliation a{color:#255c68;text-decoration:none;font-weight:600}
+.footer-affiliation a:hover,.footer-affiliation a:focus-visible{text-decoration:underline}
+.footer-tech{max-width:405px;line-height:1.55;text-align:right}
+@media(max-width:1100px){.topbar-right{gap:15px}.institution-copy small{display:none}.institution-copy{max-width:150px}.toplinks{gap:13px}}
+@media(max-width:780px){.topbar-right{gap:8px}.institution{gap:5px;padding:4px}.institution-logo{width:34px;height:34px}.institution-copy{max-width:130px}.institution-copy strong{font-size:11px}.toplinks{gap:8px}.footer-tech{text-align:left;max-width:none}}
+@media(max-width:520px){.topbar{gap:9px}.brand{gap:7px}.brand-mark{width:36px;height:36px;font-size:15px;border-radius:10px}.topbar .brand{font-size:12px}.institution-copy{display:none}.institution-logo{width:32px;height:32px}.beta{font-size:9px;padding:4px 7px}.topbar-right{gap:5px}}
