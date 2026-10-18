@@ -1,4 +1,8 @@
-# BioSensor Feature Studio — GitHub Pages edition (v0.2.3 research beta)
+## v0.2.4: downloadable import templates
+
+The GitHub Pages application now provides two **synthetic** downloadable CSV templates in **01 / DATA**: one for dose-by-replicate experimental measurements and one for complete posterior-draw curves. See `docs/data/CSV_TEMPLATE_GUIDE.md` for column definitions and units. This is a UI-only release based on validated beta v0.2.3: **no scientific engine or bootstrap code changed**.
+
+# BioSensor Feature Studio — GitHub Pages edition (v0.2.4 research beta)
 
 Interactive, scientific dose–response characterization with **Python (NumPy/pandas/SciPy) running in the visitor's browser** via Pyodide/WebAssembly. The `docs/` directory can be hosted directly on GitHub Pages with no server-side Python and no authentication for visitors.
 
@@ -35,7 +39,7 @@ For archived MATLAB datasets, use the offline v0.1 converter or `prepare_data.py
 - The Python optimizer, bootstrap randomness and numerical bounds are not identical to MATLAB's historical frozen pipeline. **The site is a functional research beta, not a numerical replacement for the final VBMC/PPC results** until cross-language regression testing is complete.
 - `NONRESPONSIVE_HIGH` suppresses EC50 interpretation, even if a numerical crossing can be computed.
 - Joint threshold frequencies are exploratory fractions over bootstrap samples or user-provided complete posterior curves; not clinically or experimentally validated success probabilities.
-- No ODE integration, VBMC fitting, independent q_RBS uncertainty propagation or raw MAT parsing in the public browser v0.2.3 release.
+- No ODE integration, VBMC fitting, independent q_RBS uncertainty propagation or raw MAT parsing in the public browser v0.2.4 release.
 - Source code and synthetic data can be public; keep unpublished original replicates and any private data out of the repository.
 
 ## Local preview
@@ -85,3 +89,7 @@ No estimator, bootstrap, numerical result or posterior was modified.
 
 For v0.2.3 browser QC checks and the three-draw synthetic posterior test,
 see `QC_VALIDATION_v0_2_3.md`.
+
+## CSV templates (released in v0.2.4)
+
+The **01 / DATA** panel offers two downloadable examples, `docs/data/template_experiment.csv` and `docs/data/template_posterior.csv`. Both are synthetic, fully importable and contain example FdeR/pLux series. See `docs/data/CSV_TEMPLATE_GUIDE.md` for the schema and privacy notes. This UI addition does not change the scientific engine or browser `app.js`.

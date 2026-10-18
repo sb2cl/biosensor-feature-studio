@@ -12,12 +12,17 @@
 </head>
 <body>
   <div class="shell">
-    <header class="topbar"><a class="brand" href="./"><span class="brand-mark">B<span class="brand-dot">·</span>S</span><span>BioSensor <strong>Feature Studio</strong></span></a><div class="toplinks"><a href="https://github.com/sb2cl/biosensor-feature-studio" target="_blank" rel="noopener">GitHub repository ↗</a><span class="beta">Research beta v0.2.3</span></div></header>
+    <header class="topbar"><a class="brand" href="./"><span class="brand-mark">B<span class="brand-dot">·</span>S</span><span>BioSensor <strong>Feature Studio</strong></span></a><div class="toplinks"><a href="https://github.com/sb2cl/biosensor-feature-studio" target="_blank" rel="noopener">GitHub repository ↗</a><span class="beta">Research beta v0.2.4</span></div></header>
     <section class="hero"><div><div class="eyebrow">UNCERTAINTY-AWARE BIOSENSOR CHARACTERIZATION</div><h1>From dose–response data<br>to <em>interpretable design features.</em></h1><p>Explore basal expression, dynamic range, EC50 and response shape with system-specific estimators, bootstrap uncertainty and transparent quality checks.</p></div><div class="hero-aside"><div class="status-bullet"></div><div><strong>Runs in your browser</strong><p>Your uploaded files are processed locally, with no application data-upload endpoint.</p></div></div></section>
     <div class="status" id="status" role="status">Initializing Python scientific engine… first load may take a minute.</div>
     <div class="workspace">
       <aside class="sidebar">
-        <section class="panel"><div class="section-label">01 / DATA</div><h2>Choose a dataset</h2><label class="file-button" for="csvFile">Upload normalized CSV <span>↗</span></label><input type="file" id="csvFile" accept=".csv,text/csv"><button type="button" id="demoBtn" class="quiet-button">Restore synthetic demo</button><p class="help" id="datasetNote">Only synthetic example data are shipped with this site. Your CSV stays in this browser session.</p></section>
+        <section class="panel"><div class="section-label">01 / DATA</div><h2>Choose a dataset</h2><label class="file-button" for="csvFile">Upload normalized CSV <span>↗</span></label><input type="file" id="csvFile" accept=".csv,text/csv"><button type="button" id="demoBtn" class="quiet-button">Restore synthetic demo</button><div class="template-downloads" aria-label="CSV import templates">
+            <div class="template-heading">Download CSV templates</div>
+            <a class="template-link" href="./data/template_experiment.csv" download="biosensor_experimental_template.csv">Experimental data CSV <span aria-hidden="true">&darr;</span></a>
+            <a class="template-link" href="./data/template_posterior.csv" download="biosensor_posterior_template.csv">Posterior curves CSV <span aria-hidden="true">&darr;</span></a>
+            <p class="template-help">Editable synthetic examples for FdeR and pLux. One row per dose and well (experiment), or per dose and complete posterior draw (model). Replace example rows with your own normalized MEFL/cell data.</p>
+          </div><p class="help" id="datasetNote">Only synthetic example data are shipped with this site. Your CSV stays in this browser session.</p></section>
         <section class="panel"><div class="section-label">02 / ANALYSIS</div><label for="system">System</label><select id="system" disabled><option>Loading…</option></select><label for="series">Construct / experiment</label><select id="series" disabled><option>Loading…</option></select><label for="source">Input type</label><select id="source" disabled><option>experiment</option></select><label for="nboot">Experimental bootstrap draws</label><input id="nboot" type="number" min="30" max="5000" step="10" value="150"><label for="jitter">Jitter fraction (blank = default)</label><input id="jitter" type="number" min="0" max="0.5" step="0.01" placeholder="FdeR: 0.07 · pLux: 0"><button type="button" id="analyzeBtn" class="primary" disabled>Extract features <span>→</span></button><p class="help">Bootstrap settings affect the new browser analysis, not the archived MATLAB results.</p></section>
         <section class="panel"><div class="section-label">03 / DESIGN CONSTRAINTS</div><h2>Explore specifications</h2><label for="ecmax">EC50 ≤ (inducer unit)</label><input id="ecmax" type="number" step="any" min="0" placeholder="Optional"><label for="drmin">Dynamic range ≥ (MEFL/cell)</label><input id="drmin" type="number" step="any" min="0" placeholder="Optional"><label for="basmax">Basal ≤ (MEFL/cell)</label><input id="basmax" type="number" step="any" min="0" placeholder="Optional"><button type="button" class="quiet-button" id="applySpecs" disabled>Evaluate these thresholds</button><p class="help">Fraction of joint bootstrap samples or whole model draws meeting all selected thresholds. Not a validated success probability.</p></section>
       </aside>
@@ -30,7 +35,7 @@
         <div class="export-row"><button id="downloadSummary" type="button" class="quiet-button" disabled>Download feature CSV ↓</button><button id="downloadCurves" type="button" class="quiet-button" disabled>Download curve CSV ↓</button><button id="downloadRecord" type="button" class="quiet-button" disabled>Download provenance JSON ↓</button></div>
       </main>
     </div>
-    <footer><span>BioSensor Feature Studio <strong>v0.2.3 research beta</strong></span><span>Example data are synthetic · Python runs client-side through Pyodide · No frozen model refitting</span></footer>
+    <footer><span>BioSensor Feature Studio <strong>v0.2.4 research beta</strong></span><span>Example data are synthetic · Python runs client-side through Pyodide · No frozen model refitting</span></footer>
   </div>
 </body>
 </html>
