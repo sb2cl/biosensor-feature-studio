@@ -12,6 +12,7 @@ from typing import Optional
 import numpy as np
 import pandas as pd
 from scipy.optimize import least_squares
+from scipy.special import expit
 from scipy.stats import spearmanr
 
 METRICS = ('Basal', 'DynamicRange_total', 'DynamicRange_positive',
@@ -47,6 +48,30 @@ def _hill(x: np.ndarray, p: np.ndarray) -> np.ndarray:
         z = n * (np.log(x[positive]) - np.log(max(k, 1e-14)))
         ratio[positive] = 1.0 / (1.0 + np.exp(-np.clip(z, -700, 700)))
     return scale * (b0 + (1.0 - b0) * ratio)
+
+
+def analytic_hill_slope(x: np.ndarray, p: np.ndarray) -> np.ndarray:
+    """Analytic dy/dx on the full dose grid, matching frozen MATLAB semantics.
+
+    For n<1 the derivative at inducer=0 diverges; its Smax is +Inf,
+    excluded from finite CI summaries. Never approximate that singular
+    derivative with a grid-dependent finite difference.
+    """
+    x = np.asarray(x, dtype=float)
+    b0, n, k, scale = map(float, p)
+    out = np.empty_like(x, dtype=float)
+    pos = x > 0
+    if np.any(pos):
+        frac = expit(n * (np.log(x[pos]) - np.log(k)))
+        out[pos] = scale * (1.0 - b0) * n * frac * (1.0 - frac) / x[pos]
+    if np.any(~pos):
+        if n < 1.0:
+            out[~pos] = np.inf
+        elif n > 1.0:
+            out[~pos] = 0.0
+        else:
+            out[~pos] = scale * (1.0 - b0) / k
+    return out
 
 
 def hill_fit(x: np.ndarray, y: np.ndarray, profile: str = 'FdeR') -> dict:
@@ -93,7 +118,7 @@ def hill_fit(x: np.ndarray, y: np.ndarray, profile: str = 'FdeR') -> dict:
         yfine = _hill(fine, p)
         midpoint = .5 * (float(np.max(yfine)) + float(np.min(yfine)))
         ec50 = float(fine[np.argmin(np.abs(yfine - midpoint))])
-        smax = float(np.max(np.gradient(yfine, fine)))
+        smax = float(np.max(analytic_hill_slope(fine, p)))
         return dict(valid=True, EC50_Hill_FdeR=ec50, Hill_n=float(p[1]),
                     Hill_K=float(p[2]), Hill_R2=r2, Smax_Hill=smax,
                     Hill_n_over_8=float(p[1] > 8 - 1e-4))
@@ -218,6 +243,13 @@ def analyze_series(df: pd.DataFrame, system: str, series: str,
         warnings.append('Archived quality annotation: do not treat EC50 as validated.')
     if fit_hill and np.mean(draws.Hill_n_over_8.fillna(0)) > .5:
         warnings.append('Many Hill fits require n near/above 8; review estimator dependence.')
+    if fit_hill and system == 'FdeR':
+        n_divergent = int(np.sum(np.isinf(draws.Smax_Hill.to_numpy(dtype=float))))
+        if n_divergent:
+            warnings.append(
+                f'Analytical Hill slope diverges at zero for n<1 in {n_divergent}/{len(draws)} '
+                'draws; nonfinite Smax draws are excluded from finite uncertainty summaries, '
+                'matching frozen MATLAB behavior.')
     valid_fraction = float(np.isfinite(draws[primary_ec50]).mean())
     if valid_fraction < 0.8:
         quality = 'REVIEW' if quality == 'USABLE' else quality
@@ -277,7 +309,16 @@ def design_probability(analysis: Analysis, ec50_max: float | None = None,
         conditions.append(analysis.draws.Basal.to_numpy() <= basal_max)
     if not conditions:
         return dict(probability=np.nan, valid=0, explanation='Set at least one design threshold.')
-    valid = np.isfinite(analysis.draws[analysis.primary_ec50].to_numpy())
+    metrics = []
+    if ec50_max is not None:
+        metrics.append(analysis.primary_ec50)
+    if dr_min is not None:
+        metrics.append(analysis.primary_dr)
+    if basal_max is not None:
+        metrics.append('Basal')
+    valid = np.ones(len(analysis.draws), dtype=bool)
+    for metric in metrics:
+        valid &= np.isfinite(analysis.draws[metric].to_numpy(dtype=float))
     mask = valid.copy()
     for c in conditions:
         mask &= c
