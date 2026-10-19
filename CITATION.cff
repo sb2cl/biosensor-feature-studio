@@ -1,8 +1,9 @@
 cff-version: 1.2.0
-message: "If you use BioSensor Feature Studio in research, cite the version-specific archived software release DOI when it is available."
+message: "If you use BioSensor Feature Studio in research, cite the archived version 1.0.0 DOI."
 type: software
 title: "BioSensor Feature Studio"
 version: 1.0.0
+doi: "10.5281/zenodo.23461067"
 abstract: "An open-source browser-based workflow for uncertainty-aware characterization of genetic biosensor dose-response data and externally generated model curves, with system-specific feature estimators, interpretability diagnostics, and exploratory design constraints."
 authors:
   - given-names: Yadira

@@ -24,7 +24,7 @@ def test_metadata_copyright_authors_and_version():
     assert cff.index('family-names: Boada') < cff.index('family-names: Vignoni')
     assert authors.index('Yadira Boada') < authors.index('Alejandro Vignoni')
     assert not (R/'.zenodo.json').exists()
-    assert '10.5281/zenodo.' not in cff
+    assert 'doi: "10.5281/zenodo.23461067"' in cff
 
 def test_ui_and_json_export_share_release_version():
     html=(R/'docs/index.html').read_text(encoding='utf-8')

@@ -1,6 +1,8 @@
 # BioSensor Feature Studio
 
-**Version 1.0.0 - release candidate for GitHub + Zenodo archive.**
+**Version 1.0.0 - citable research software release.**
+
+[![Zenodo DOI: v1.0.0](https://zenodo.org/badge/DOI/10.5281/zenodo.23461067.svg)](https://doi.org/10.5281/zenodo.23461067)
 
 Public application: https://sb2cl.github.io/biosensor-feature-studio/  
 Source: https://github.com/sb2cl/biosensor-feature-studio  
@@ -96,6 +98,13 @@ endorsement permission for reuse; see [brand notice](BRANDING_AND_ASSETS.md).
 No actual experimental private measurements or MATLAB/posterior archives
 are bundled in this public software distribution; the demo data are synthetic.
 
-**Zenodo version-specific DOI:** not assigned until the real `v1.0.0`
-GitHub release is archived. Do not cite a guessed DOI. Instructions are in
-[release guide](RELEASE_ZENODO_GUIDE.md).
+**Version 1.0.0 Zenodo DOI:** [10.5281/zenodo.23461067](https://doi.org/10.5281/zenodo.23461067).
+
+**Recommended software citation:** Boada, Y., & Vignoni, A. (2026).
+*BioSensor Feature Studio* (v1.0.0) [Computer software]. Zenodo.
+https://doi.org/10.5281/zenodo.23461067
+
+This DOI refers to the archived v1.0.0 snapshot; subsequent commits on
+`main` (including citation-only changes) do not modify the immutable
+`v1.0.0` release or its Zenodo archive. See the [release guide](RELEASE_ZENODO_GUIDE.md)
+for how to cite a specific version.
